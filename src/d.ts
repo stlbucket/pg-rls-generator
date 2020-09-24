@@ -15,7 +15,8 @@ export interface PgrTable {
 
 export interface PgrSchema {
   schemaName: string,
-  schemaTables: PgrTable[]
+  schemaTables: PgrTable[],
+  schemaViews: PgrTable[]
 }
 
 export interface PgrRoleSet {
@@ -77,3 +78,6 @@ export interface PgrSchemaTableAssignmentSet {
   tableAssignments: any
 }
 
+export interface PgrConfig {
+
+}

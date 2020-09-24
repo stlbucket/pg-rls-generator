@@ -76,9 +76,18 @@ export default class Init extends Command {
             }
           }, {}
         )
+        const viewAssignments = s.schemaViews.reduce(
+          (a: any, t:PgrTable) => {
+            return {
+              ...a,
+              [t.tableName]: defaultSecurityProfiles.defaultProfileName
+            }
+          }, {}
+        )
         return {
           schemaName: s.schemaName,
-          tableAssignments: tableAssignments
+          tableAssignments: tableAssignments,
+          viewAssignments: viewAssignments
         }
       }
     )

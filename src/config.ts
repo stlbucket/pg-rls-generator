@@ -5,6 +5,11 @@ let dbConfig = {
 }
 
 async function loadConfig() {
+  const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
+  const spPath = `${process.cwd()}/.pgrlsgen/current-draft/security-profiles.json`
+  const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
+  const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
+
   const dbConfigExists = await existsSync(dbConfigPath)
   if (dbConfigExists) {
     const dbConfigContents = await readFileSync(dbConfigPath)

@@ -20,6 +20,17 @@ async function introspectDb() {
               existingPolicies: policies
             }
           }
+        ),
+        schemaViews: s.schema_views.map(
+          (t: any) => {
+            const policies = introspection[0].rls_policies.filter((p: any) => p.schemaname === s.schema_name && p.tablename === t.table_name)
+            return {
+              schemaName: t.table_schema,
+              tableName: t.table_name,
+              tableColumns: t.table_columns,
+              existingPolicies: policies
+            }
+          }
         )
       }
     }

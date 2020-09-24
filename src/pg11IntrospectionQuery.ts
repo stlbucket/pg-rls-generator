@@ -77,8 +77,33 @@ async function buildQuery(schemas: string) {
                   ) role_table_grants
                 from information_schema.tables t
                 where t.table_schema = s.schema_name
+                and t.table_type = 'BASE TABLE'
+                order by t.table_name
               ) t
             ) schema_tables
+            ,(
+              select coalesce((array_to_json(array_agg(row_to_json(t))))::jsonb, '[]')
+              from (
+                select
+                  t.*
+                  ,'table' __typename
+                  ,s.schema_name || '.' || t.table_name id
+                  ,(
+                    select coalesce((array_to_json(array_agg(row_to_json(rtg))))::jsonb, '[]'::jsonb)
+                    from (
+                      select
+                        rtg.*
+                      from information_schema.role_table_grants rtg
+                      where rtg.table_schema = t.table_schema
+                      and rtg.table_name = t.table_name
+                    ) rtg
+                  ) role_table_grants
+                from information_schema.tables t
+                where t.table_schema = s.schema_name
+                and t.table_type = 'VIEW'
+                order by t.table_name
+              ) t
+            ) schema_views
             ,(
               select coalesce((array_to_json(array_agg(row_to_json(sf))))::jsonb, '[]'::jsonb)
               from (
