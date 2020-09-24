@@ -4,15 +4,15 @@ import { ColumnExclusionSet, PgrRoleGrant, PgrRoleSet, PgrSchemaTableAssignmentS
 import computeTablePolicy from '../fn/computeTablePolicy'
 import {introspectDb} from '../fn/introspect-db'
 // @ts-ignore
-// import * as tableProfileAssignments from `${process.cwd()}/.pgfb/table-profile-assignments.json`
+// import * as tableProfileAssignments from `${process.cwd()}/.pgrlsgen/table-profile-assignments.json`
 // import config from '../config'
 // import {doQuery} from '../pg-client'
 // import buildQuery from '../pg11IntrospectionQuery'
 
-const tpaPath = `${process.cwd()}/.pgfb/current-draft/table-profile-assignments.json`
-const spPath = `${process.cwd()}/.pgfb/current-draft/security-profiles.json`
-const rPath = `${process.cwd()}/.pgfb/current-draft/roles.json`
-const artifactsDir = `${process.cwd()}/.pgfb/current-draft/artifacts`
+const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
+const spPath = `${process.cwd()}/.pgrlsgen/current-draft/security-profiles.json`
+const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
+const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
 
 function mapSecurityProfile(
   securityProfile: PgrTableSecurityProfile, 

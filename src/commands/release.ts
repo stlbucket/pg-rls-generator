@@ -17,7 +17,7 @@ export default class Release extends Command {
 
   static args = [{name: 'file'}]
 
-  baseDir = `${process.cwd()}/.pgfb`
+  baseDir = `${process.cwd()}/.pgrlsgen`
   currentDraftDir = `${this.baseDir}/current-draft`
   releasesDir = `${this.baseDir}/releases`
 

@@ -1,5 +1,5 @@
 import {existsSync, readFileSync} from 'fs'
-const dbConfigPath = `${process.cwd()}/.pgfb/current-draft/db-config.json`
+const dbConfigPath = `${process.cwd()}/.pgrlsgen/current-draft/db-config.json`
 let dbConfig = {
   connectionString: "NO DB CONFIG"
 }

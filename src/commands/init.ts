@@ -18,7 +18,7 @@ export default class Init extends Command {
 
   static args = []
 
-  baseDir = `${process.cwd()}/.pgfb`
+  baseDir = `${process.cwd()}/.pgrlsgen`
   currentDraftDir = `${this.baseDir}/current-draft`
 
   async doBaseDir() {
