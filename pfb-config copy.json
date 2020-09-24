@@ -1,0 +1,106 @@
+{
+  "roleSet": {
+    "name": "graphile-visitor",
+    "defaultRlsUsing": "( user_id = app_public.current_user_id() )",
+    "dbOwnerRole": {
+      "roleName": "graphile_starter",
+      "applicableRoles": []
+    },
+    "dbAuthenticatorRole": {
+      "roleName": "graphile_starter_authenticator",
+      "applicableRoles": [
+        {
+          "roleName": "graphile_starter_visitor"
+        }
+      ]
+    },
+    "dbUserRoles": [
+      {
+        "roleName": "graphile_starter_visitor",
+        "applicableRoles": []
+      }
+    ]
+  },
+  "tableSecurityProfiles": {
+    "default": {
+      "grants": {
+        "SELECT": [
+          "graphile_starter_visitor"
+        ],
+        "INSERT": [
+          "graphile_starter_visitor"
+        ],
+        "UPDATE": [
+          "graphile_starter_visitor"
+        ],
+        "DELETE": [
+          "graphile_starter_visitor"
+        ]
+      },
+      "revokes": {
+        "SELECT": [
+          "public"
+        ],
+        "INSERT": [
+          "public"
+        ],
+        "UPDATE": [
+          "public"
+        ],
+        "DELETE": [
+          "public"
+        ]
+      },
+      "policies": {
+        "SELECT": [
+          {
+            "cmd": "SELECT",
+            "qual": "soro.check_access(seller_id)",
+            "roles": [
+              "graphile_starter_visitor"
+            ],
+            "permissive": "PERMISSIVE",
+            "policyname": "can_select",
+            "with_check": null
+          }
+        ],
+        "INSERT": [
+          {
+            "cmd": "INSERT",
+            "qual": "soro.check_access(seller_id)",
+            "roles": [
+              "graphile_starter_visitor"
+            ],
+            "permissive": "PERMISSIVE",
+            "policyname": "can_insert",
+            "with_check": null
+          }
+        ],
+        "UPDATE": [
+          {
+            "cmd": "UPDATE",
+            "qual": "soro.check_access(seller_id)",
+            "roles": [
+              "graphile_starter_visitor"
+            ],
+            "permissive": "PERMISSIVE",
+            "policyname": "can_update",
+            "with_check": null
+          }
+        ],
+        "DELETE": [
+          {
+            "cmd": "DELETE",
+            "qual": "soro.check_access(seller_id)",
+            "roles": [
+              "graphile_starter_visitor"
+            ],
+            "permissive": "PERMISSIVE",
+            "policyname": "can_delete",
+            "with_check": null
+          }
+        ]
+      }
+    }
+  }
+}
