@@ -4,6 +4,7 @@ import {introspectDb} from '../fn/introspect-db'
 import generateAllTableScripts from '../fn/generate-all-table-scripts'
 import generateAllFunctionScripts from '../fn/generate-all-function-scripts'
 import generateOwnershipPolicy from '../fn/generate-ownership-policy'
+import generateRemoveAllRls from '../fn/generate-remove-all-rls'
 import { PgrSchema } from '../d'
 // @ts-ignore
 // import * as tableProfileAssignments from `${process.cwd()}/.pgrlsgen/table-profile-assignments.json`
@@ -41,6 +42,7 @@ export default class Generate extends Command {
     await generateAllTableScripts(introspection)
     await generateAllFunctionScripts(introspection)
     await generateOwnershipPolicy(introspection)
+    await generateRemoveAllRls(introspection)
     process.exit()
   }
 }
