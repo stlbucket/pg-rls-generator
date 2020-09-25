@@ -110,11 +110,11 @@ async function buildQuery(schemas: string) {
                 select
                   'function' __typename
                   ,n.nspname || '.' ||  p.proname || '_' || p.oid id
-                  ,p.proname function_name
-                  ,n.nspname function_schema
-                  ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') result_data_type
-                  ,coalesce(pg_catalog.pg_get_function_arguments(p.oid), 'N/A') argument_data_types
-                  ,coalesce(pg_catalog.pg_get_functiondef(p.oid)::text, 'N/A') definition
+                  ,p.proname "functionName"
+                  ,n.nspname "functionSchema"
+                  ,coalesce(pg_catalog.pg_get_function_result(p.oid), 'N/A') "resultDataType"
+                  ,coalesce(pg_catalog.pg_get_function_arguments(p.oid), 'N/A') "argumentDataTypes"
+                  ,coalesce(pg_catalog.pg_get_functiondef(p.oid)::text, 'N/A') "definition"
                   from pg_catalog.pg_proc p
                   left join pg_catalog.pg_namespace n ON n.oid = p.pronamespace
                   where n.nspname = s.schema_name

@@ -31,7 +31,8 @@ async function introspectDb() {
               existingPolicies: policies
             }
           }
-        )
+        ),
+        schemaFunctions: s.schema_functions
       }
     }
   )

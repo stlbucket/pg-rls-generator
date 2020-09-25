@@ -6,7 +6,7 @@ let dbConfig = {
 
 async function loadConfig() {
   const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
-  const spPath = `${process.cwd()}/.pgrlsgen/current-draft/security-profiles.json`
+  const spPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
   const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
   const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
 

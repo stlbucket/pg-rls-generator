@@ -13,10 +13,19 @@ export interface PgrTable {
   existingPolicies: PgrRlsPolicy[]
 }
 
+export interface PgrFunction {
+  functionSchema: string,
+  functionName: string,
+  resultDataType: string,
+  argumentDataTypes: string,
+  definition: string
+}
+
 export interface PgrSchema {
   schemaName: string,
   schemaTables: PgrTable[],
-  schemaViews: PgrTable[]
+  schemaViews: PgrTable[],
+  schemaFunctions: PgrFunction[]
 }
 
 export interface PgrRoleSet {
@@ -43,9 +52,11 @@ export interface PgrRlsPolicy {
   cmd: string,
   qual: string,
   roles: string[],
-  permissive: string
-  policyname: string
-  with_check: string | null
+  permissive: string,
+  policyname: string,
+  with_check: string | null,
+  schemaName?: string,
+  tableName?: string
 }
 
 export interface PgrRlsPolicySet {
@@ -73,9 +84,34 @@ export interface PgrTableSecurityProfileSet {
   tableSecurityProfiles: PgrTableSecurityProfile[]
 }
 
-export interface PgrSchemaTableAssignmentSet {
+export interface PgrTableAssignmentSet {
+  [key: string]: string
+}
+
+export interface PgrTableProfileAssignmentSet {
   schemaName: string,
-  tableAssignments: any
+  tableAssignments: PgrTableAssignmentSet
+}
+
+
+export interface PgrFunctionRoleGrantSet {
+  EXECUTE: string[],
+  [key: string]: string[] 
+}
+
+export interface PgrFunctionSecurityProfile {
+  name: string,
+  grants: PgrFunctionRoleGrantSet
+}
+
+export interface PgrFunctionSecurityProfileSet {
+  defaultProfileName: string,
+  functionSecurityProfiles: PgrFunctionSecurityProfile[]
+}
+
+export interface PgrFunctionProfileAssignmentSet {
+  schemaName: string,
+  functionAssignments: any
 }
 
 export interface PgrConfig {

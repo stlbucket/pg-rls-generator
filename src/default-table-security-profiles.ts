@@ -1,7 +1,7 @@
 import { PgrTableSecurityProfileSet } from "./d"
 
 const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
-  "defaultProfileName": "super-admin-crud::user-read",
+  "defaultProfileName": "no-access",
   "defaultInsertExclusions": [
     "id",
     "created_at"
@@ -11,6 +11,24 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
     "created_at"
   ],
   "tableSecurityProfiles": [
+    {
+      "name": "no-access",
+      "enableRls": true,
+      "grants": {
+        "ALL": [],
+        "SELECT": [],
+        "INSERT": [],
+        "UPDATE": [],
+        "DELETE": []
+      },
+      "policies": {
+        "ALL": [],
+        "SELECT": [],
+        "INSERT": [],
+        "UPDATE": [],
+        "DELETE": []
+      }
+    },
     {
       "name": "all-actions::all-users",
       "enableRls": true,
@@ -24,13 +42,18 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
         "INSERT": [
           {
             "roleName": "soro_user",
+          },
+          {
+            "roleName": "soro_super_admin",
             "exclusions": ["created_at"]
           }
         ],
         "UPDATE": [
           {
             "roleName": "soro_user",
-            "exclusions": ["id", "created_at"]
+          },
+          {
+            "roleName": "soro_super_admin"
           }
         ],
         "DELETE": [

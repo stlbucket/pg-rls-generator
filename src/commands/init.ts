@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import {mkdirSync, rmdirSync, existsSync, writeFileSync} from 'fs'
-import defaultSecurityProfiles from '../default-security-profiles'
+import defaultTableSecurityProfiles from '../default-table-security-profiles'
+import defaultFunctionSecurityProfiles from '../default-function-security-profiles'
 import defaultPgrRoleSet from '../default-role-set'
 import defaultDbConfig from '../default-db-config'
 import {introspectDb} from '../fn/introspect-db'
@@ -44,11 +45,13 @@ export default class Init extends Command {
 
     const currentDraftDirExists = await existsSync(this.currentDraftDir)
     if (!currentDraftDirExists) {
-      const securityProfilesPath = `${this.currentDraftDir}/security-profiles.json`
+      const tableSecurityProfilesPath = `${this.currentDraftDir}/table-security-profiles.json`
+      const functionSecurityProfilesPath = `${this.currentDraftDir}/function-security-profiles.json`
       const roleSetFilePath = `${this.currentDraftDir}/roles.json`
       const dbConfigFilePath = `${this.currentDraftDir}/db-config.json`
         await mkdirSync(this.currentDraftDir)
-      await writeFileSync(securityProfilesPath, JSON.stringify(defaultSecurityProfiles,null,2))
+      await writeFileSync(tableSecurityProfilesPath, JSON.stringify(defaultTableSecurityProfiles,null,2))
+      await writeFileSync(functionSecurityProfilesPath, JSON.stringify(defaultFunctionSecurityProfiles,null,2))
       await writeFileSync(roleSetFilePath, JSON.stringify(defaultPgrRoleSet,null,2))
       await writeFileSync(dbConfigFilePath, JSON.stringify(defaultDbConfig,null,2))
 
@@ -59,20 +62,19 @@ export default class Init extends Command {
     }
 
     return {
-      securityProfiles: defaultSecurityProfiles
+      securityProfiles: defaultTableSecurityProfiles
     }
   }
 
-  async doTableProfileAssignments() {
-    const introspection = await introspectDb()
-    const tableProfileAssignementsPath = `${this.currentDraftDir}/table-profile-assignments.json`
+  async doTableProfileAssignments(introspection:any) {
+    const tableProfileAssignmentsPath = `${this.currentDraftDir}/table-profile-assignments.json`
     const tableProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
       (s: PgrSchema) => {
         const tableAssignments = s.schemaTables.reduce(
           (a: any, t:PgrTable) => {
             return {
               ...a,
-              [t.tableName]: defaultSecurityProfiles.defaultProfileName
+              [t.tableName]: defaultTableSecurityProfiles.defaultProfileName
             }
           }, {}
         )
@@ -80,7 +82,7 @@ export default class Init extends Command {
           (a: any, t:PgrTable) => {
             return {
               ...a,
-              [t.tableName]: defaultSecurityProfiles.defaultProfileName
+              [t.tableName]: defaultTableSecurityProfiles.defaultProfileName
             }
           }, {}
         )
@@ -91,7 +93,28 @@ export default class Init extends Command {
         }
       }
     )
-    await writeFileSync(tableProfileAssignementsPath, JSON.stringify(tableProfileAssignments,null,2))
+    await writeFileSync(tableProfileAssignmentsPath, JSON.stringify(tableProfileAssignments,null,2))
+  }
+
+  async doFunctionProfileAssignments(introspection:any) {
+    const functionProfileAssignmentsPath = `${this.currentDraftDir}/function-profile-assignments.json`
+    const functionProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
+      (s: PgrSchema) => {
+        const functionAssignments = s.schemaFunctions.reduce(
+          (a: any, f:any) => {
+            return {
+              ...a,
+              [f.functionName]: defaultFunctionSecurityProfiles.defaultProfileName
+            }
+          }, {}
+        )
+        return {
+          schemaName: s.schemaName,
+          functionAssignments: functionAssignments
+        }
+      }
+    )
+    await writeFileSync(functionProfileAssignmentsPath, JSON.stringify(functionProfileAssignments,null,2))
   }
 
   async run() {
@@ -100,7 +123,9 @@ export default class Init extends Command {
     await this.doBaseDir()
     await this.doCurrentDraftDir()
 
-    await this.doTableProfileAssignments()
+    const introspection = await introspectDb()
+    await this.doTableProfileAssignments(introspection)
+    await this.doFunctionProfileAssignments(introspection)
 
     process.exit()
   }
