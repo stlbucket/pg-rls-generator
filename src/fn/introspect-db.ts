@@ -1,4 +1,4 @@
-import { PgrRlsPolicy, PgrRlsPolicySet } from '../d'
+import { PgrRlsPolicy } from '../d'
 import {doQuery} from '../pg-client'
 import buildQuery from '../pg11IntrospectionQuery'
 

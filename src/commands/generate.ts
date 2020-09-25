@@ -3,6 +3,7 @@ import {rmdirSync, mkdirSync} from 'fs'
 import {introspectDb} from '../fn/introspect-db'
 import generateAllTableScripts from '../fn/generate-all-table-scripts'
 import generateAllFunctionScripts from '../fn/generate-all-function-scripts'
+import generateOwnershipPolicy from '../fn/generate-ownership-policy'
 import { PgrSchema } from '../d'
 // @ts-ignore
 // import * as tableProfileAssignments from `${process.cwd()}/.pgrlsgen/table-profile-assignments.json`
@@ -26,7 +27,6 @@ export default class Generate extends Command {
     
     const introspection = await introspectDb()
 
-
     // @ts-ignore
     await rmdirSync(artifactsDir, {recursive: true})
     await mkdirSync(artifactsDir)
@@ -40,6 +40,7 @@ export default class Generate extends Command {
     await Promise.all(p)
     await generateAllTableScripts(introspection)
     await generateAllFunctionScripts(introspection)
+    await generateOwnershipPolicy(introspection)
     process.exit()
   }
 }

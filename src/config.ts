@@ -1,10 +1,11 @@
 import {existsSync, readFileSync} from 'fs'
+import { PgrConfig } from './d'
 const dbConfigPath = `${process.cwd()}/.pgrlsgen/current-draft/db-config.json`
 let dbConfig = {
   connectionString: "NO DB CONFIG"
 }
 
-async function loadConfig() {
+async function loadConfig(): Promise<PgrConfig> {
   const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
   const spPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
   const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
@@ -18,7 +19,9 @@ async function loadConfig() {
 
   console.log(dbConfigExists, dbConfigPath, JSON.stringify(dbConfig,null,2))
 
-  return dbConfig
+  return {
+    dbConfig: dbConfig
+  }
 }
 // @ts-ignore
 // import defaultSecurityProfiles from './default-security-profiles'

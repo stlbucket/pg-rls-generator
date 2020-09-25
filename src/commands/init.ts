@@ -3,9 +3,9 @@ import {mkdirSync, rmdirSync, existsSync, writeFileSync} from 'fs'
 import defaultTableSecurityProfiles from '../default-table-security-profiles'
 import defaultFunctionSecurityProfiles from '../default-function-security-profiles'
 import defaultPgrRoleSet from '../default-role-set'
-import defaultDbConfig from '../default-db-config'
 import {introspectDb} from '../fn/introspect-db'
 import { PgrSchema, PgrTable, PgrTableProfileAssignmentSet } from '../d'
+import { ConnectionConfig } from 'pg'
 
 export default class Init extends Command {
   static description = 'initialize config and output directories'
@@ -36,7 +36,7 @@ export default class Init extends Command {
     }
   }
 
-  async doCurrentDraftDir() {
+  async doCurrentDraftDir(connectionString: string) {
     const {flags} = this.parse(Init)
     if (flags.force) {
       // @ts-ignore
@@ -45,11 +45,14 @@ export default class Init extends Command {
 
     const currentDraftDirExists = await existsSync(this.currentDraftDir)
     if (!currentDraftDirExists) {
+      const defaultDbConfig: ConnectionConfig = {
+        connectionString: connectionString
+      }
       const tableSecurityProfilesPath = `${this.currentDraftDir}/table-security-profiles.json`
       const functionSecurityProfilesPath = `${this.currentDraftDir}/function-security-profiles.json`
       const roleSetFilePath = `${this.currentDraftDir}/roles.json`
       const dbConfigFilePath = `${this.currentDraftDir}/db-config.json`
-        await mkdirSync(this.currentDraftDir)
+      await mkdirSync(this.currentDraftDir)
       await writeFileSync(tableSecurityProfilesPath, JSON.stringify(defaultTableSecurityProfiles,null,2))
       await writeFileSync(functionSecurityProfilesPath, JSON.stringify(defaultFunctionSecurityProfiles,null,2))
       await writeFileSync(roleSetFilePath, JSON.stringify(defaultPgrRoleSet,null,2))
@@ -120,8 +123,10 @@ export default class Init extends Command {
   async run() {
     const {args, flags} = this.parse(Init)
 
+    const connectionString = flags.connectionString
+
     await this.doBaseDir()
-    await this.doCurrentDraftDir()
+    await this.doCurrentDraftDir(connectionString)
 
     const introspection = await introspectDb()
     await this.doTableProfileAssignments(introspection)

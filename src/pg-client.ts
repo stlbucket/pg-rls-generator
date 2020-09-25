@@ -6,7 +6,7 @@ let pool: any
 
 const initPool = async() => {
   const config = await loadConfig()
-  const connectionString = config.connectionString
+  const connectionString = config.dbConfig.connectionString
 
   if (!connectionString) throw new Error('config.connectionString required')
 

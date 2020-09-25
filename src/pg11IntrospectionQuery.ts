@@ -119,6 +119,7 @@ async function buildQuery(schemas: string) {
                   left join pg_catalog.pg_namespace n ON n.oid = p.pronamespace
                   where n.nspname = s.schema_name
                   and p.prokind in ('f')
+                  order by p.proname
               ) sf
             ) schema_functions
           from information_schema.schemata s

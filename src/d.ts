@@ -1,5 +1,4 @@
-import { string } from '@oclif/command/lib/flags';
-import { PendingTestFunction } from 'mocha';
+import { ConnectionConfig } from 'pg';
 
 export interface PgrRole {
   roleName: string,
@@ -115,5 +114,9 @@ export interface PgrFunctionProfileAssignmentSet {
 }
 
 export interface PgrConfig {
-
+  dbConfig: ConnectionConfig,
+  tableSecurityProfiles?: PgrTableSecurityProfileSet,
+  functionSecurityProfiles?: PgrFunctionSecurityProfileSet,
+  tableSecurityProfileAssignments?: PgrTableProfileAssignmentSet,
+  functionProfileAssignments?: PgrFunctionProfileAssignmentSet,
 }
