@@ -1,5 +1,5 @@
 import {existsSync, readFileSync} from 'fs'
-import { PgrConfig, PgrFunctionSecurityProfileAssignmentSet, PgrFunctionSecurityProfileSet, PgrRoleSet, PgrTableProfileAssignmentSet, PgrTableSecurityProfileSet } from './d'
+import { PgrConfig, PgrFunctionSecurityProfileAssignmentSet, PgrFunctionSecurityProfileSet, PgrRoleSet, PgrSchemaTableProfileAssignmentSet, PgrTableSecurityProfileSet } from './d'
 const dbConfigPath = `${process.cwd()}/.pgrlsgen/current-draft/db-config.json`
 let dbConfig = {
   connectionString: "NO DB CONFIG"
@@ -36,7 +36,7 @@ async function loadConfig(): Promise<PgrConfig> {
 
   const tableSecurityProfiles: PgrTableSecurityProfileSet = await loadOneConfigFile(tspPath)
   const functionSecurityProfiles: PgrFunctionSecurityProfileSet = await loadOneConfigFile(fspPath)
-  const tableSecurityProfileAssignments: PgrTableProfileAssignmentSet[] = await loadOneConfigFile(tpaPath)
+  const tableSecurityProfileAssignments: PgrSchemaTableProfileAssignmentSet[] = await loadOneConfigFile(tpaPath)
   const functionSecurityProfileAssignments: PgrFunctionSecurityProfileAssignmentSet[] = await loadOneConfigFile(fpaPath)
 
   config = {

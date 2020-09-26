@@ -31,7 +31,8 @@ export interface PgrRoleSet {
   name: string,
   dbOwnerRole: PgrRole,
   dbAuthenticatorRole: PgrRole,
-  dbUserRoles: PgrRole[]
+  dbUserRoles: PgrRole[],
+  dbAnonymousRole?: PgrRole
 }
 
 export interface PgrRoleGrant {
@@ -87,11 +88,19 @@ export interface PgrTableAssignment {
   [key: string]: string
 }
 
-export interface PgrTableProfileAssignmentSet {
+export interface PgrSchemaTableProfileAssignmentSet {
   schemaName: string,
   tableAssignments: PgrTableAssignment
 }
 
+export interface PgrFunctionAssignment {
+  [key: string]: string
+}
+
+export interface PgrSchemaFunctionProfileAssignmentSet {
+  schemaName: string,
+  functionAssignments: PgrFunctionAssignment
+}
 
 export interface PgrFunctionRoleGrantSet {
   EXECUTE: string[],
@@ -118,6 +127,41 @@ export interface PgrConfig {
   roleSet: PgrRoleSet,
   tableSecurityProfileSet: PgrTableSecurityProfileSet,
   functionSecurityProfileSet: PgrFunctionSecurityProfileSet,
-  tableSecurityProfileAssignments: PgrTableProfileAssignmentSet[],
+  tableSecurityProfileAssignments: PgrSchemaTableProfileAssignmentSet[],
   functionSecurityProfileAssignments: PgrFunctionSecurityProfileAssignmentSet[],
+}
+
+export interface PgrTableScript {
+  tableName: string,
+  tableScript: string
+}
+
+export interface PgrSchemaTableScriptSet {
+  schemaName: string,
+  tableScripts: PgrTableScript[]
+}
+
+export interface PgrMasterTableScriptSet {
+  schemaTableScriptSets: PgrSchemaTableScriptSet[]
+}
+
+export interface PgrFunctionScript {
+  functionName: string,
+  functionScript: string
+}
+
+export interface PgrSchemaFunctionScriptSet {
+  schemaName: string,
+  functionScripts: PgrFunctionScript[]
+}
+
+export interface PgrMasterFunctionScriptSet {
+  schemaFunctionScriptSets: PgrSchemaFunctionScriptSet[]
+}
+
+export interface PgrScriptSet {
+  masterTableScriptSet: PgrMasterTableScriptSet,
+  masterFunctionScriptSet: PgrMasterFunctionScriptSet,
+  ownershipScript: string,
+  removeAllRlsScript: string
 }

@@ -4,7 +4,7 @@ import defaultTableSecurityProfiles from '../default-table-security-profiles'
 import defaultFunctionSecurityProfiles from '../default-function-security-profiles'
 import defaultPgrRoleSet from '../default-role-set'
 import {introspectDb} from '../fn/introspect-db'
-import { PgrSchema, PgrTable, PgrTableProfileAssignmentSet } from '../d'
+import { PgrSchema, PgrTable, PgrSchemaTableProfileAssignmentSet } from '../d'
 import { ConnectionConfig } from 'pg'
 
 export default class Init extends Command {
@@ -71,7 +71,7 @@ export default class Init extends Command {
 
   async doTableProfileAssignments(introspection:any) {
     const tableProfileAssignmentsPath = `${this.currentDraftDir}/table-profile-assignments.json`
-    const tableProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
+    const tableProfileAssignments: PgrSchemaTableProfileAssignmentSet[] = introspection.schemaTree.map(
       (s: PgrSchema) => {
         const tableAssignments = s.schemaTables.reduce(
           (a: any, t:PgrTable) => {
@@ -101,7 +101,7 @@ export default class Init extends Command {
 
   async doFunctionSecurityProfileAssignments(introspection:any) {
     const functionSecurityProfileAssignmentsPath = `${this.currentDraftDir}/function-profile-assignments.json`
-    const functionSecurityProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
+    const functionSecurityProfileAssignments: PgrSchemaTableProfileAssignmentSet[] = introspection.schemaTree.map(
       (s: PgrSchema) => {
         const functionAssignments = s.schemaFunctions.reduce(
           (a: any, f:any) => {
