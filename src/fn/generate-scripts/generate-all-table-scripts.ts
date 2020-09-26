@@ -1,6 +1,7 @@
 const Mustache = require('mustache')
-import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import {ColumnExclusionSet, PgrRoleGrant, PgrRoleSet, PgrTable, PgrTableProfileAssignmentSet, PgrTableSecurityProfile, PgrSchema, PgrRole} from "../d"
+import { mkdirSync, writeFileSync } from 'fs'
+import {ColumnExclusionSet, PgrRoleGrant, PgrRoleSet, PgrTable, PgrTableProfileAssignmentSet, PgrTableSecurityProfile, PgrSchema, PgrRole, PgrConfig, PgrTableSecurityProfileSet} from "../../d"
+import loadConfig from '../../config'
 
 const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
 const spPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
@@ -194,25 +195,20 @@ async function generateSchemaTableScripts(schemaTableAssignmentSet: PgrTableProf
 }
 
 async function generateAllTableScripts(introspection: any) {
-  const tpaFc = await readFileSync(tpaPath)
-  const tableProfileAssignments: PgrTableProfileAssignmentSet[] = JSON.parse(tpaFc.toString())
+  const config: PgrConfig = await loadConfig()
 
-  const spFc = await readFileSync(spPath)
-  const securityProfiles = JSON.parse(spFc.toString())
-  
-  const rFc = await readFileSync(rPath)
-  const roles = JSON.parse(rFc.toString())
+  const tableSecurityProfileSet: PgrTableSecurityProfileSet = config.tableSecurityProfileSet
 
-  const mappedSecurityProfiles: PgrTableSecurityProfile[] = securityProfiles.tableSecurityProfiles.map(
+  const mappedSecurityProfiles: PgrTableSecurityProfile[] = tableSecurityProfileSet.tableSecurityProfiles.map(
     (p: PgrTableSecurityProfile) => {
-      return mapSecurityProfile(p, securityProfiles.defaultInsertExclusions, securityProfiles.defaultUpdateExclusions)
+      return mapSecurityProfile(p, tableSecurityProfileSet.defaultInsertExclusions, tableSecurityProfileSet.defaultUpdateExclusions)
     }
   )
 
-  const p = tableProfileAssignments
+  const p = config.tableSecurityProfileAssignments
   .map(
-    async (schemaAssignments: any) => {
-      await generateSchemaTableScripts(schemaAssignments, mappedSecurityProfiles, roles, introspection)
+    async (schemaAssignments: PgrTableProfileAssignmentSet) => {
+      await generateSchemaTableScripts(schemaAssignments, mappedSecurityProfiles, config.roleSet, introspection)
     }
   );
 

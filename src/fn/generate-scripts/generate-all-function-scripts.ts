@@ -1,6 +1,8 @@
 const Mustache = require('mustache')
-import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import {ColumnExclusionSet, PgrRoleGrant, PgrRoleSet, PgrFunction, PgrFunctionProfileAssignmentSet, PgrFunctionSecurityProfile, PgrFunctionAssignment, PgrSchema, PgrRole} from "../d"
+import { mkdirSync, writeFileSync } from 'fs'
+import {PgrRoleSet, PgrFunction, PgrFunctionSecurityProfile, PgrSchema, PgrRole} from "../../d"
+import loadConfig from '../../config'
+import { PgrConfig, PgrFunctionSecurityProfileSet, PgrTableSecurityProfileSet } from '../../d'
 
 const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/function-profile-assignments.json`
 const spPath = `${process.cwd()}/.pgrlsgen/current-draft/function-security-profiles.json`
@@ -66,7 +68,7 @@ async function computeFunctionScript(fn: PgrFunction, securityProfile: PgrFuncti
   return computeFunctionPolicy(fn, securityProfile, roles)
 }
 
-async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionProfileAssignmentSet, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
+async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentset, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
   const p = Object.keys(schemaFunctionAssignmentSet.functionAssignments)
     // .filter(k => ['seller', 'strain'].indexOf(k) > -1)
     .map(
@@ -87,7 +89,7 @@ async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunc
   return results
 }
 
-async function generateSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionProfileAssignmentSet, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
+async function generateSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentset, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
   const schemaDir = `${artifactsDir}/${schemaFunctionAssignmentSet.schemaName}`
   const functionsDir = `${schemaDir}/functionScripts`
   await mkdirSync(functionsDir)
@@ -109,19 +111,14 @@ async function generateSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFun
 }
 
 async function generateAllFunctionScripts(introspection: any) {
-  const tpaFc = await readFileSync(tpaPath)
-  const functionProfileAssignments: PgrFunctionProfileAssignmentSet[] = JSON.parse(tpaFc.toString())
+  const config: PgrConfig = await loadConfig()
 
-  const spFc = await readFileSync(spPath)
-  const securityProfiles = JSON.parse(spFc.toString())
-  
-  const rFc = await readFileSync(rPath)
-  const roles = JSON.parse(rFc.toString())
+  const functionSecurityProfileSet: PgrFunctionSecurityProfileSet = config.functionSecurityProfileSet
 
-  const p = functionProfileAssignments
+  const p = config.functionSecurityProfileAssignments
   .map(
     async (schemaAssignments: any) => {
-      await generateSchemaFunctionScripts(schemaAssignments, securityProfiles.functionSecurityProfiles, roles, introspection)
+      await generateSchemaFunctionScripts(schemaAssignments, functionSecurityProfileSet.functionSecurityProfiles, config.roleSet, introspection)
     }
   );
 

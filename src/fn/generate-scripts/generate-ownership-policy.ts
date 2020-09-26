@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import Mustache from 'mustache'
-import { PgrRoleSet, PgrSchema } from '../d';
-import { introspectDb } from './introspect-db';
+import { PgrRoleSet, PgrSchema } from '../../d';
+import loadConfig from '../../config'
 
 const ownershipPolicyTemplate = `
 ----------
@@ -29,9 +29,7 @@ const ownershipPolicyTemplate = `
 `
 
 async function computeOwnershipPolicy (introspection: any) {
-  const rolesPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
-  const roles = await readFileSync(rolesPath)
-  const roleSet: PgrRoleSet = JSON.parse(roles.toString())
+  const config = await loadConfig()
 
   const sortedSchemata = introspection.schemaTree
   .map((s:PgrSchema)=>{
@@ -56,7 +54,7 @@ async function computeOwnershipPolicy (introspection: any) {
     ownershipPolicyTemplate,
     {
       schemata: sortedSchemata,
-      dbOwnerRole: roleSet.dbOwnerRole.roleName
+      dbOwnerRole: config.roleSet.dbOwnerRole.roleName
     }
   ).split("&#39;").join("'")
 }

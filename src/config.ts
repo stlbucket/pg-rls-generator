@@ -1,14 +1,28 @@
 import {existsSync, readFileSync} from 'fs'
-import { PgrConfig } from './d'
+import { PgrConfig, PgrFunctionSecurityProfileAssignmentSet, PgrFunctionSecurityProfileSet, PgrRoleSet, PgrTableProfileAssignmentSet, PgrTableSecurityProfileSet } from './d'
 const dbConfigPath = `${process.cwd()}/.pgrlsgen/current-draft/db-config.json`
 let dbConfig = {
   connectionString: "NO DB CONFIG"
 }
 
+let config: PgrConfig | null = null;
+
+async function loadOneConfigFile(filePath:string): Promise<any | null> {
+  const fileExists = await existsSync(filePath)
+  if (!fileExists) return null
+
+  const fileContents = await readFileSync(filePath)
+  return JSON.parse(fileContents.toString())
+}
+
 async function loadConfig(): Promise<PgrConfig> {
-  const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
-  const spPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
+  if (config !== null) return config;
+
   const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
+  const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
+  const tspPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
+  const fpaPath = `${process.cwd()}/.pgrlsgen/current-draft/function-profile-assignments.json`
+  const fspPath = `${process.cwd()}/.pgrlsgen/current-draft/function-security-profiles.json`
   const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
 
   const dbConfigExists = await existsSync(dbConfigPath)
@@ -17,14 +31,24 @@ async function loadConfig(): Promise<PgrConfig> {
     dbConfig = JSON.parse(dbConfigContents.toString())
   }
 
-  console.log(dbConfigExists, dbConfigPath, JSON.stringify(dbConfig,null,2))
+  const rFc = await readFileSync(rPath)
+  const roles: PgrRoleSet = JSON.parse(rFc.toString())
 
-  return {
-    dbConfig: dbConfig
+  const tableSecurityProfiles: PgrTableSecurityProfileSet = await loadOneConfigFile(tspPath)
+  const functionSecurityProfiles: PgrFunctionSecurityProfileSet = await loadOneConfigFile(fspPath)
+  const tableSecurityProfileAssignments: PgrTableProfileAssignmentSet[] = await loadOneConfigFile(tpaPath)
+  const functionSecurityProfileAssignments: PgrFunctionSecurityProfileAssignmentSet[] = await loadOneConfigFile(fpaPath)
+
+  config = {
+    dbConfig: dbConfig,
+    roleSet: roles,
+    tableSecurityProfileSet: tableSecurityProfiles,
+    tableSecurityProfileAssignments: tableSecurityProfileAssignments,
+    functionSecurityProfileSet: functionSecurityProfiles,
+    functionSecurityProfileAssignments: functionSecurityProfileAssignments
   }
+
+  return config
 }
-// @ts-ignore
-// import defaultSecurityProfiles from './default-security-profiles'
-// @ts-ignore
 
 export default loadConfig

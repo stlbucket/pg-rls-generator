@@ -99,9 +99,9 @@ export default class Init extends Command {
     await writeFileSync(tableProfileAssignmentsPath, JSON.stringify(tableProfileAssignments,null,2))
   }
 
-  async doFunctionProfileAssignments(introspection:any) {
-    const functionProfileAssignmentsPath = `${this.currentDraftDir}/function-profile-assignments.json`
-    const functionProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
+  async doFunctionSecurityProfileAssignments(introspection:any) {
+    const functionSecurityProfileAssignmentsPath = `${this.currentDraftDir}/function-profile-assignments.json`
+    const functionSecurityProfileAssignments: PgrTableProfileAssignmentSet[] = introspection.schemaTree.map(
       (s: PgrSchema) => {
         const functionAssignments = s.schemaFunctions.reduce(
           (a: any, f:any) => {
@@ -117,7 +117,7 @@ export default class Init extends Command {
         }
       }
     )
-    await writeFileSync(functionProfileAssignmentsPath, JSON.stringify(functionProfileAssignments,null,2))
+    await writeFileSync(functionSecurityProfileAssignmentsPath, JSON.stringify(functionSecurityProfileAssignments,null,2))
   }
 
   async run() {
@@ -130,7 +130,7 @@ export default class Init extends Command {
 
     const introspection = await introspectDb()
     await this.doTableProfileAssignments(introspection)
-    await this.doFunctionProfileAssignments(introspection)
+    await this.doFunctionSecurityProfileAssignments(introspection)
 
     process.exit()
   }

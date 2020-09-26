@@ -83,13 +83,13 @@ export interface PgrTableSecurityProfileSet {
   tableSecurityProfiles: PgrTableSecurityProfile[]
 }
 
-export interface PgrTableAssignmentSet {
+export interface PgrTableAssignment {
   [key: string]: string
 }
 
 export interface PgrTableProfileAssignmentSet {
   schemaName: string,
-  tableAssignments: PgrTableAssignmentSet
+  tableAssignments: PgrTableAssignment
 }
 
 
@@ -108,15 +108,16 @@ export interface PgrFunctionSecurityProfileSet {
   functionSecurityProfiles: PgrFunctionSecurityProfile[]
 }
 
-export interface PgrFunctionProfileAssignmentSet {
+export interface PgrFunctionSecurityProfileAssignmentSet {
   schemaName: string,
   functionAssignments: any
 }
 
 export interface PgrConfig {
   dbConfig: ConnectionConfig,
-  tableSecurityProfiles?: PgrTableSecurityProfileSet,
-  functionSecurityProfiles?: PgrFunctionSecurityProfileSet,
-  tableSecurityProfileAssignments?: PgrTableProfileAssignmentSet,
-  functionProfileAssignments?: PgrFunctionProfileAssignmentSet,
+  roleSet: PgrRoleSet,
+  tableSecurityProfileSet: PgrTableSecurityProfileSet,
+  functionSecurityProfileSet: PgrFunctionSecurityProfileSet,
+  tableSecurityProfileAssignments: PgrTableProfileAssignmentSet[],
+  functionSecurityProfileAssignments: PgrFunctionSecurityProfileAssignmentSet[],
 }
