@@ -1,6 +1,6 @@
 const Mustache = require('mustache')
 import { mkdirSync, writeFileSync } from 'fs'
-import {PgrRoleSet, PgrFunction, PgrFunctionSecurityProfile, PgrSchema, PgrRole} from "../../d"
+import {PgrRoleSet, PgrFunction, PgrFunctionSecurityProfile, PgrSchema, PgrRole, PgrFunctionSecurityProfileAssignmentSet} from "../../d"
 import loadConfig from '../../config'
 import { PgrConfig, PgrFunctionSecurityProfileSet, PgrTableSecurityProfileSet } from '../../d'
 
@@ -68,7 +68,7 @@ async function computeFunctionScript(fn: PgrFunction, securityProfile: PgrFuncti
   return computeFunctionPolicy(fn, securityProfile, roles)
 }
 
-async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentset, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
+async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentSet, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
   const p = Object.keys(schemaFunctionAssignmentSet.functionAssignments)
     // .filter(k => ['seller', 'strain'].indexOf(k) > -1)
     .map(
@@ -89,7 +89,7 @@ async function computeSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunc
   return results
 }
 
-async function generateSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentset, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
+async function generateSchemaFunctionScripts(schemaFunctionAssignmentSet: PgrFunctionSecurityProfileAssignmentSet, securityProfiles: PgrFunctionSecurityProfile[], roles: PgrRoleSet, introspection: any) {
   const schemaDir = `${artifactsDir}/${schemaFunctionAssignmentSet.schemaName}`
   const functionsDir = `${schemaDir}/functionScripts`
   await mkdirSync(functionsDir)
