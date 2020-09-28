@@ -23,7 +23,7 @@ const functionPolicyTemplate = `
   `
 
 function computeFunctionPolicy (fn: PgrFunction, functionSecurityProfile: PgrFunctionSecurityProfile, roles: PgrRoleSet) {
-  const revokeRolesList = ['public', ...roles.dbUserRoles.map((r:PgrRole) => r.roleName)]
+  const revokeRolesList = ['public', ...roles.dbUserRoles.map((r:PgrRole) => r.roleName)].join(',\n       ')
 
   const roleGrant = {
     roles: functionSecurityProfile.grants.EXECUTE.join(', ')
@@ -45,8 +45,7 @@ function computeFunctionPolicy (fn: PgrFunction, functionSecurityProfile: PgrFun
     schemaName: fn.functionSchema,
     functionName: fn.functionName,
     functionSecurityProfileName: functionSecurityProfile.name,
-    revokeRolesList: revokeRolesList.join(',\n       '),
-    grantRolesList: roles.dbUserRoles.map((r:any) => r.roleName).join(",\n"),
+    revokeRolesList: revokeRolesList,
     roleGrant: roleGrant,
     functionSignature: functionSignature
   }
