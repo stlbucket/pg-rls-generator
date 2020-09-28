@@ -50,7 +50,7 @@ export interface PgrRoleGrantSet {
 
 export interface PgrRlsPolicy {
   cmd: string,
-  qual: string,
+  qual: string | null,
   roles: string[],
   permissive: string,
   policyname: string,
@@ -132,6 +132,7 @@ export interface PgrConfig {
 }
 
 export interface PgrTableScript {
+  tableSchema: string,
   tableName: string,
   tableScript: string
 }

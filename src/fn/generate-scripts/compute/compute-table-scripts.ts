@@ -18,7 +18,8 @@ const tablePolicyTemplate = `
   alter table {{schemaName}}.{{tableName}} enable row level security;
 
 {{#rlsPolicies}}
-  create policy {{policyname}} on {{schemaName}}.{{tableName}} as {{permissive}} for {{cmd}} to {{roles}}{{#qual}} using ({{qual}}){{/qual}}{{#with_check}}with check ({{with_check}}){{/with_check}};
+  drop policy if exists {{policyname}} on {{schemaName}}.{{tableName}};
+  create policy {{policyname}} on {{schemaName}}.{{tableName}} as {{permissive}} for {{cmd}} to {{roles}}{{#qual}} using ({{qual}}){{/qual}}{{#with_check}} with check ({{with_check}}){{/with_check}};
 {{/rlsPolicies}}
 {{/enableRls}}
 {{^enableRls}}
@@ -124,6 +125,7 @@ async function computeSchemaTableScripts(schemaTableAssignmentSet: PgrSchemaTabl
         if (!securityProfile) throw new Error(`No securityProfile: ${schemaTableAssignmentSet.tableAssignments[tableName]}`)
         const tableScript = await computeTablePolicy(table, securityProfile, roles)
         return {
+          tableSchema: schemaTableAssignmentSet.schemaName,
           tableName: tableName,
           tableScript: tableScript
         }

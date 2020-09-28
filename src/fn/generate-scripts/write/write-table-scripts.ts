@@ -13,7 +13,16 @@ async function writeSchemaTableScripts(tableScriptSet: PgrSchemaTableScriptSet) 
     .map(
       async(ts: PgrTableScript) => {
         const tableScriptPath = `${tablesDir}/${ts.tableName}.sql`
-        await writeFileSync(tableScriptPath, ts.tableScript)
+        const fileContents = `
+begin;
+\\dp+ ${ts.tableSchema}.${ts.tableName};
+
+${ts.tableScript}
+
+\\dp+ ${ts.tableSchema}.${ts.tableName};
+rollback;`
+        
+        await writeFileSync(tableScriptPath, fileContents)
       }
     )
   await Promise.all(p)

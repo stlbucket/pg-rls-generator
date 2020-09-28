@@ -3,7 +3,7 @@ import {doQuery} from '../pg-client'
 import buildQuery from '../pg11IntrospectionQuery'
 
 async function introspectDb() {
-  const sql = await buildQuery('soro, soro_auth')
+  const sql = await buildQuery('soro, soro_auth, soro_auth_app, ucs, leaf, lf_hist, prd_fn, evt')
   const introspection = (await doQuery(sql)).rows
   const mappedSchemaTree = introspection[0].schema_tree
   .map(

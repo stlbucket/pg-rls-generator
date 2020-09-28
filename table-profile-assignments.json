@@ -1,0 +1,178 @@
+[
+  {
+    "schemaName": "lf_hist",
+    "tableAssignments": {
+      "lf_hist_inventory_adjustment": "sa-crud::u-r::check",
+      "lf_hist_inventory_item": "sa-crud::u-r::check",
+      "lf_hist_inventory_transfer": "sa-crud::u-r::check",
+      "lf_hist_inventory_transfer_item": "sa-crud::u-r::check",
+      "lf_hist_inventory_type": "sa-crud::u-r::check",
+      "lf_hist_mme": "sa-crud::u-r::no-check",
+      "lf_hist_sale": "sa-crud::u-r::check",
+      "lf_hist_sale_item": "sa-crud::u-r::check",
+      "lf_hist_strain": "sa-crud::u-r::check"
+    },
+    "viewAssignments": {}
+  },
+  {
+    "schemaName": "prd_fn",
+    "tableAssignments": {},
+    "viewAssignments": {}
+  },
+  {
+    "schemaName": "ucs",
+    "tableAssignments": {
+      "ucs_employee": "sa-crud::u-r::check",
+      "ucs_inventory_item": "sa-crud::u-r::check",
+      "ucs_inventory_item_relationship": "sa-crud::u-r::check",
+      "ucs_inventory_transfer": "sa-crud::u-r::check",
+      "ucs_inventory_type": "sa-crud::u-r::check",
+      "ucs_manifest": "sa-crud::u-r::check",
+      "ucs_manifest_stop": "sa-crud::u-r::check",
+      "ucs_manifest_stop_item": "sa-crud::u-r::check",
+      "ucs_vehicle": "sa-crud::u-r::check",
+      "ucs_vendor": "sa-crud::u-r::no-check"
+    },
+    "viewAssignments": {
+      "vw_ucs_inventory_transfer_status": "sa-crud::u-r::check",
+      "vw_ucs_manifest_status": "sa-crud::u-r::check",
+      "vw_ucs_manifest_stop_item_status": "sa-crud::u-r::check",
+      "vw_ucs_manifest_stop_status": "sa-crud::u-r::check"
+    }
+  },
+  {
+    "schemaName": "soro_auth_app",
+    "tableAssignments": {},
+    "viewAssignments": {}
+  },
+  {
+    "schemaName": "soro_auth",
+    "tableAssignments": {
+      "soro_user": "no-access",
+      "soro_user_token": "no-access"
+    },
+    "viewAssignments": {}
+  },
+  {
+    "schemaName": "soro",
+    "tableAssignments": {
+      "account_note": "u-crud::check",
+      "app_exception": "sa-crud::u-r::no-check",
+      "app_permission": "sa-crud::u-r::no-check",
+      "app_role": "sa-crud::u-r::no-check",
+      "app_role_permission": "sa-crud::u-r::no-check",
+      "attachment": "u-crud::check",
+      "attachment_trash": "sa-crud::u-r::check",
+      "attachment_type": "sa-crud::u-r::no-check",
+      "brand": "u-crud::check",
+      "company": "sa-crud::u-r::no-check",
+      "company_web_link": "u-crud::check",
+      "contact": "no-access",
+      "contact_app_role": "no-access",
+      "contact_web_link": "no-access",
+      "conversion_definition": "no-access",
+      "conversion_source_definition": "no-access",
+      "conversion_target_definition": "no-access",
+      "customer": "u-crud::check",
+      "customer_communication": "u-crud::check",
+      "customer_contact_app_role": "no-access",
+      "customer_note": "u-crud::check",
+      "delivery": "no-access",
+      "display_name_mask": "no-access",
+      "flavor": "u-crud::check",
+      "inventory_category": "sa-crud::u-r::no-check",
+      "inventory_group": "sa-crud::u-r::check",
+      "inventory_lot": "sa-crud::u-r::check",
+      "inventory_reservation": "no-access",
+      "inventory_stage": "sa-crud::u-r::no-check",
+      "inventory_transfer_rule": "sa-crud::u-r::no-check",
+      "inventory_type": "sa-crud::u-r::no-check",
+      "lf_liti_missing": "no-access",
+      "location": "sa-crud::u-r::no-check",
+      "manifest": "no-access",
+      "oli_xref_missing": "no-access",
+      "order_info": "sa-crud::u-r::check",
+      "order_line_item": "sa-crud::u-r::check",
+      "package_count": "u-crud::check",
+      "package_weight": "u-crud::check",
+      "potency": "u-crud::check",
+      "product": "u-crud::check",
+      "product_category": "sa-crud::u-r::no-check",
+      "product_grade": "u-crud::check",
+      "product_line": "u-crud::check",
+      "product_sub_category": "sa-crud::u-r::no-check",
+      "quotable_status_adjustment": "no-access",
+      "quote": "no-access",
+      "quote_line_item": "no-access",
+      "quote_status_processing_config": "no-access",
+      "quote_target_lot": "no-access",
+      "registration": "no-access",
+      "room": "sa-crud::u-r::check",
+      "seller": "sa-crud::u-r::check-seller",
+      "seller_inventory_type_category": "sa-crud::u-r::check",
+      "shopping_cart": "no-access",
+      "sku": "u-crud::check",
+      "species_mix": "u-crud::check",
+      "strain": "sa-crud::u-r::check",
+      "vehicle": "sa-crud::u-r::check",
+      "web_link": "u-crud::check"
+    },
+    "viewAssignments": {
+      "active_quote_view": "no-access",
+      "company_contact_view": "no-access",
+      "company_user_info_view": "no-access",
+      "company_view": "no-access",
+      "contact_view": "no-access",
+      "customer_contact_view": "no-access",
+      "customer_user_info_view": "no-access",
+      "customer_view": "no-access",
+      "illegal_contact_view": "no-access",
+      "inventory_type_view": "no-access",
+      "past_order_view": "no-access",
+      "potential_customer_view": "no-access",
+      "seller_contact_view": "no-access",
+      "seller_user_info_view": "no-access",
+      "seller_view": "no-access",
+      "strain_view": "no-access",
+      "ucs_seller_view": "no-access",
+      "user_info_view": "no-access",
+      "user_view": "no-access",
+      "vw_order_status_summary": "no-access",
+      "vw_seller_fulfilled_sales_by_month": "no-access",
+      "vw_seller_fulfilled_sales_by_quarter": "no-access",
+      "vw_seller_fulfilled_sales_by_week": "no-access",
+      "vw_seller_fulfilled_sales_by_year": "no-access"
+    }
+  },
+  {
+    "schemaName": "leaf",
+    "tableAssignments": {
+      "inventory_type_rule": "sa-crud::u-r::no-check",
+      "lf_area": "sa-crud::u-r::check",
+      "lf_inventory_item": "sa-crud::u-r::check",
+      "lf_inventory_transfer": "sa-crud::u-r::check",
+      "lf_inventory_transfer_item": "sa-crud::u-r::check",
+      "lf_inventory_type": "sa-crud::u-r::check",
+      "lf_order_number_reservation": "sa-crud::u-r::check",
+      "lf_strain": "sa-crud::u-r::check",
+      "lf_sync_result": "sa-crud::u-r::check",
+      "lf_sync_subscription": "sa-crud::u-r::check",
+      "mme": "sa-crud::u-r::no-check"
+    },
+    "viewAssignments": {
+      "lf_company_view": "no-access",
+      "lf_customer_view": "no-access",
+      "lf_seller_view": "no-access",
+      "not_xfer_vw": "no-access",
+      "should_not_xfer_vw": "no-access",
+      "tgt_xfer_vw": "no-access"
+    }
+  },
+  {
+    "schemaName": "evt",
+    "tableAssignments": {
+      "evt": "sa-crud::u-r::check"
+    },
+    "viewAssignments": {}
+  }
+]

@@ -79,25 +79,25 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
         "INSERT": [
           {
             "cmd": "INSERT",
-            "qual": "soro.check_access(seller_id)",
+            "qual": null,
             "roles": [
               "soro_user"
             ],
             "permissive": "PERMISSIVE",
             "policyname": "can_insert",
-            "with_check": null
+            "with_check": "soro.check_access(seller_id)"
           }
         ],
         "UPDATE": [
           {
             "cmd": "UPDATE",
-            "qual": "soro.check_access(seller_id)",
+            "qual": null,
             "roles": [
               "soro_user"
             ],
             "permissive": "PERMISSIVE",
             "policyname": "can_update",
-            "with_check": null
+            "with_check": "soro.check_access(seller_id)"
           }
         ],
         "DELETE": [
@@ -157,25 +157,25 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
         "INSERT": [
           {
             "cmd": "INSERT",
-            "qual": "true",
+            "qual": null,
             "roles": [
               "soro_super_admin"
             ],
             "permissive": "PERMISSIVE",
             "policyname": "can_insert",
-            "with_check": null
+            "with_check": "true"
           }
         ],
         "UPDATE": [
           {
             "cmd": "UPDATE",
-            "qual": "true",
+            "qual": null,
             "roles": [
               "soro_super_admin"
             ],
             "permissive": "PERMISSIVE",
             "policyname": "can_update",
-            "with_check": null
+            "with_check": "true"
           }
         ],
         "DELETE": [
