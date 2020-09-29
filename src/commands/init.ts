@@ -4,8 +4,8 @@ import defaultTableSecurityProfiles from '../default-table-security-profiles'
 import defaultFunctionSecurityProfiles from '../default-function-security-profiles'
 import defaultPgrRoleSet from '../default-role-set'
 import {introspectDb} from '../fn/introspect-db'
-import { PgrSchema, PgrTable, PgrSchemaTableProfileAssignmentSet } from '../d'
-import { ConnectionConfig } from 'pg'
+import {PgrSchema, PgrTable, PgrSchemaTableProfileAssignmentSet} from '../d'
+import {ConnectionConfig} from 'pg'
 
 export default class Init extends Command {
   static description = 'initialize config and output directories'
@@ -26,7 +26,7 @@ export default class Init extends Command {
     const {flags} = this.parse(Init)
     if (flags.forceAll) {
      // @ts-ignore
-     await rmdirSync(this.baseDir, { recursive: true })
+     await rmdirSync(this.baseDir, {recursive: true})
     }
 
     const baseDirExists = await existsSync(this.baseDir)
@@ -40,7 +40,7 @@ export default class Init extends Command {
     const {flags} = this.parse(Init)
     if (flags.force) {
       // @ts-ignore
-      await rmdirSync(this.currentDraftDir, { recursive: true })
+      await rmdirSync(this.currentDraftDir, {recursive: true })
     }
 
     const currentDraftDirExists = await existsSync(this.currentDraftDir)

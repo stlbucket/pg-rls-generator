@@ -2,7 +2,8 @@ import {expect, test} from '@oclif/test'
 
 describe('release', () => {
   test
-  .it('generate', ctx => {
+  .it('release', ctx => {
+    ctx
     expect(true).to.equal(true)
   })
 })

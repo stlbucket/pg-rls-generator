@@ -37,7 +37,8 @@ export interface PgrRoleSet {
 
 export interface PgrRoleGrant {
   roleName: string,
-  exclusions?: string[]
+  insertExclusions?: string[]
+  updateExclusions?: string[]
 }
 
 export interface PgrRoleGrantSet {

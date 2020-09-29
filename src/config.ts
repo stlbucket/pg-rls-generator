@@ -15,15 +15,17 @@ async function loadOneConfigFile(filePath:string): Promise<any | null> {
   return JSON.parse(fileContents.toString())
 }
 
-async function loadConfig(): Promise<PgrConfig> {
+async function loadConfig(workDir?: string): Promise<PgrConfig> {
   if (config !== null) return config;
 
-  const rPath = `${process.cwd()}/.pgrlsgen/current-draft/roles.json`
-  const tpaPath = `${process.cwd()}/.pgrlsgen/current-draft/table-profile-assignments.json`
-  const tspPath = `${process.cwd()}/.pgrlsgen/current-draft/table-security-profiles.json`
-  const fpaPath = `${process.cwd()}/.pgrlsgen/current-draft/function-profile-assignments.json`
-  const fspPath = `${process.cwd()}/.pgrlsgen/current-draft/function-security-profiles.json`
-  const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
+  const cwd = workDir || `${process.cwd()}/.pgrlsgen/current-draft`
+
+  const rPath = `${cwd}/roles.json`
+  const tpaPath = `${cwd}/table-profile-assignments.json`
+  const tspPath = `${cwd}/table-security-profiles.json`
+  const fpaPath = `${cwd}/function-profile-assignments.json`
+  const fspPath = `${cwd}/function-security-profiles.json`
+  const artifactsDir = `${cwd}/artifacts`
 
   const dbConfigExists = await existsSync(dbConfigPath)
   if (dbConfigExists) {

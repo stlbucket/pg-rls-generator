@@ -10,7 +10,8 @@ async function introspectDb() {
     (s: any) => {
       return {
         schemaName: s.schema_name,
-        schemaTables: s.schema_tables.map(
+        schemaTables: s.schema_tables
+        .map(
           (t: any) => {
             const policies = introspection[0].rls_policies.filter((p: any) => p.schemaname === s.schema_name && p.tablename === t.table_name)
             return {

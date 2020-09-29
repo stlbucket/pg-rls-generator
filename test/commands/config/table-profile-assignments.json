@@ -1,0 +1,17 @@
+[
+  {
+    "schemaName": "lf_hist",
+    "tableAssignments": {
+      "lf_hist_inventory_adjustment": "sa-crud::u-r::check",
+      "lf_hist_inventory_item": "sa-crud::u-r::check",
+      "lf_hist_inventory_transfer": "sa-crud::u-r::check",
+      "lf_hist_inventory_transfer_item": "sa-crud::u-r::check",
+      "lf_hist_inventory_type": "sa-crud::u-r::check",
+      "lf_hist_mme": "sa-crud::u-r::no-check",
+      "lf_hist_sale": "sa-crud::u-r::check",
+      "lf_hist_sale_item": "sa-crud::u-r::check",
+      "lf_hist_strain": "sa-crud::u-r::check"
+    },
+    "viewAssignments": {}
+  },
+]

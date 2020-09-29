@@ -45,7 +45,7 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
           },
           {
             "roleName": "soro_super_admin",
-            "exclusions": ["created_at"]
+            "insertExclusions": ["created_at"]
           }
         ],
         "UPDATE": [

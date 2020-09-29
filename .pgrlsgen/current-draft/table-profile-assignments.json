@@ -67,7 +67,7 @@
       "brand": "u-crud::check",
       "company": "sa-crud::u-r::no-check",
       "company_web_link": "u-crud::check",
-      "contact": "no-access",
+      "contact": "sa-crud::u-r::check-contact",
       "contact_app_role": "no-access",
       "contact_web_link": "no-access",
       "conversion_definition": "no-access",
