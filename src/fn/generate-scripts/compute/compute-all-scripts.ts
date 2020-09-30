@@ -1,18 +1,25 @@
-import {rmdirSync, mkdirSync} from 'fs'
 import computeAllTableScripts from './compute-table-scripts'
 import computeAllFunctionScripts from './compute-function-scripts'
 import computeOwnershipPolicy from './compute-ownership-script'
 import computeRemoveAllRls from './compute-remove-all-rls-script'
-import { PgrSchema } from '../../../d'
+import computeCreateRoles from './compute-create-roles-sql'
+import { PgrScriptSet } from '../../../d'
 
-const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
+async function computeAllScripts(introspection: any): Promise<PgrScriptSet> {
 
-async function computeAllScripts(introspection: any) {
+    const masterTableScriptSet = await computeAllTableScripts(introspection)
+    const masterFunctionScriptSet = await computeAllFunctionScripts(introspection)
+    const ownershipScript = await computeOwnershipPolicy(introspection)
+    const removeAllRlsScript = await computeRemoveAllRls(introspection)
+    const createRolesScript = await computeCreateRoles()
 
-    await computeAllTableScripts(introspection)
-    await computeAllFunctionScripts(introspection)
-    await computeOwnershipPolicy(introspection)
-    await computeRemoveAllRls(introspection)
+    return {
+        masterTableScriptSet: masterTableScriptSet,
+        masterFunctionScriptSet: masterFunctionScriptSet,
+        ownershipScript: ownershipScript,
+        removeAllRlsScript: removeAllRlsScript,
+        createRolesScript: createRolesScript
+    }
 }
 
 export default computeAllScripts

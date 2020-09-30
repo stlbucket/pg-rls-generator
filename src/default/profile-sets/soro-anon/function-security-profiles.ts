@@ -1,6 +1,6 @@
-import { PgrFunctionSecurityProfileSet } from "./d"
+import { PgrFunctionSecurityProfileSet } from "../d"
 
-const defaultPgrFunctionSecurityProfileSet: PgrFunctionSecurityProfileSet = {
+const functionSecurityProfileSet: PgrFunctionSecurityProfileSet = {
   "defaultProfileName": "super-admin-execute",
   "functionSecurityProfiles": [
     {
@@ -18,4 +18,4 @@ const defaultPgrFunctionSecurityProfileSet: PgrFunctionSecurityProfileSet = {
   ]
 }
 
-export default defaultPgrFunctionSecurityProfileSet
+export default functionSecurityProfileSet

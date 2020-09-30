@@ -1,0 +1,354 @@
+                                                                                         Access privileges
+ Schema |                 Name                 | Type  |     Access privileges      | Column privileges |                                         Policies                                          
+--------+--------------------------------------+-------+----------------------------+-------------------+-------------------------------------------------------------------------------------------
+ soro   | account_note                         | table | soro=arwdDxt/soro         +|                   | can_select:                                                                              +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | active_quote_view                    | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | app_exception                        | table | postgres=arwdDxt/postgres +|                   | 
+        |                                      |       | soro_user=r/postgres       |                   | 
+ soro   | app_permission                       | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | app_role                             | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | app_role_permission                  | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | attachment                           | table | postgres=arwdDxt/postgres +|                   | 
+        |                                      |       | soro_user=arwd/postgres    |                   | 
+ soro   | attachment_trash                     | table | postgres=arwdDxt/postgres +|                   | can_select (r):                                                                          +
+        |                                      |       | soro_user=ar/postgres      |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_insert (a):                                                                          +
+        |                                      |       |                            |                   |   (c): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_update (w):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | attachment_type                      | table | postgres=arwdDxt/postgres +|                   | 
+        |                                      |       | soro_user=r/postgres       |                   | 
+ soro   | brand                                | table | soro=arwdDxt/soro         +|                   | all_brand_soro_super_admin (r):                                                          +
+        |                                      |       | soro_user=arwdDxt/soro     |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | can_select (r):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_insert (a):                                                                          +
+        |                                      |       |                            |                   |   (c): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_update (w):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_delete (d):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | company                              | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro        +|                   | 
+        |                                      |       | soro_anonymous=rwd/soro    |                   | 
+ soro   | company_contact_view                 | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | company_user_info_view               | view  |                            |                   | 
+ soro   | company_view                         | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | company_web_link                     | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | contact                              | table | soro=arwdDxt/soro         +|                   | all_contact_soro_super_admin (r):                                                        +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_contact_soro_user (r):                                                               +
+        |                                      |       |                            |                   |   (u): (id IN ( SELECT soro.viewer_allowed_contact_ids() AS viewer_allowed_contact_ids)) +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | contact_app_role                     | table | soro=arwdDxt/soro         +|                   | all_contact_app_role_soro_super_admin (r):                                               +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_contact_app_role_soro_user (r):                                                      +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | select_contact_app_role (r):                                                             +
+        |                                      |       |                            |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))
+ soro   | contact_view                         | view  |                            |                   | 
+ soro   | contact_web_link                     | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | conversion_definition                | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | conversion_source_definition         | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | conversion_target_definition         | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | customer                             | table | soro=arwdDxt/soro         +|                   | all_customer_soro_super_admin (r):                                                       +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_customer_soro_user (r):                                                              +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | select_customer (r):                                                                     +
+        |                                      |       |                            |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))
+ soro   | customer_communication               | table | soro=arwdDxt/soro         +|                   | all_customer_communication_soro_super_admin (r):                                         +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_customer_communication_soro_user (r):                                                +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | customer_contact_app_role            | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | customer_contact_view                | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | customer_note                        | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | customer_user_info_view              | view  |                            |                   | 
+ soro   | customer_view                        | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | delivery                             | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | display_name_mask                    | table | soro=arwdDxt/soro         +|                   | all_display_name_mask_soro_super_admin (r):                                              +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_display_name_mask_soro_user (r):                                                     +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | flavor                               | table | soro=arwdDxt/soro         +|                   | all_flavor (r):                                                                          +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))          +
+        |                                      |       |                            |                   | all_flavor_soro_super_admin (r):                                                         +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_flavor_soro_user (r):                                                                +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | illegal_contact_view                 | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | inventory_category                   | table | soro=arwdDxt/soro         +|                   | all_inventory_category_soro_user (r):                                                    +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | all_inventory_category_soro_super_admin (r):                                             +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin
+ soro   | inventory_group                      | table |                            |                   | 
+ soro   | inventory_lot                        | table | soro=arwdDxt/soro         +|                   | all_inventory_lot_soro_super_admin (r):                                                  +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_inventory_lot_soro_user (r):                                                         +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | select_inventory_lot (r):                                                                +
+        |                                      |       |                            |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))
+ soro   | inventory_reservation                | table | soro=arwdDxt/soro         +|                   | all_inventory_reservation_soro_super_admin (r):                                          +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_inventory_reservation_soro_user (r):                                                 +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | inventory_stage                      | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_super_admin=rwd/soro +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | inventory_transfer_rule              | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | inventory_type                       | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | inventory_type_view                  | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | lf_liti_missing                      | table |                            |                   | 
+ soro   | location                             | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro        +|                   | 
+        |                                      |       | soro_anonymous=rwd/soro    |                   | 
+ soro   | manifest                             | table | soro=arwdDxt/soro         +|                   | all_manifest_soro_super_admin (r):                                                       +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_manifest_soro_user (r):                                                              +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | oli_xref_missing                     | table |                            |                   | 
+ soro   | order_info                           | table | soro=arwdDxt/soro         +|                   | can_select (r):                                                                          +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | sa_can_select (r):                                                                       +
+        |                                      |       |                            |                   |   (u): true                                                                              +
+        |                                      |       |                            |                   |   to: soro_super_admin
+ soro   | order_line_item                      | table | postgres=arwdDxt/postgres +|                   | can_select (r):                                                                          +
+        |                                      |       | soro_user=r/postgres       |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | sa_can_select (r):                                                                       +
+        |                                      |       |                            |                   |   (u): true                                                                              +
+        |                                      |       |                            |                   |   to: soro_super_admin
+ soro   | package_count                        | table | soro=arwdDxt/soro         +|                   | all_package_count (r):                                                                   +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))          +
+        |                                      |       |                            |                   | all_package_count_soro_super_admin (r):                                                  +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_package_count_soro_user (r):                                                         +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | package_weight                       | table | soro=arwdDxt/soro         +|                   | all_package_weight (r):                                                                  +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))          +
+        |                                      |       |                            |                   | all_package_weight_soro_super_admin (r):                                                 +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_package_weight_soro_user (r):                                                        +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | past_order_view                      | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | potency                              | table | soro=arwdDxt/soro         +|                   | all_potency (r):                                                                         +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))          +
+        |                                      |       |                            |                   | all_potency_soro_super_admin (r):                                                        +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_potency_soro_user (r):                                                               +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | potential_customer_view              | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | product                              | table | soro=arwdDxt/soro         +|                   | can_update (w):                                                                          +
+        |                                      |       | soro_user=arwdDxt/soro     |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | all_product_soro_user (r):                                                               +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_select (r):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_insert (a):                                                                          +
+        |                                      |       |                            |                   |   (c): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_delete (d):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | product_category                     | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_super_admin=rwd/soro +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | product_grade                        | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | product_line                         | table | soro=arwdDxt/soro         +|                   | all_product_line_soro_super_admin (r):                                                   +
+        |                                      |       | soro_user=arwdDxt/soro     |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | can_select (r):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_insert (a):                                                                          +
+        |                                      |       |                            |                   |   (c): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_update (w):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_delete (w):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | product_sub_category                 | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_super_admin=rwd/soro +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | quotable_status_adjustment           | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | quote                                | table | soro=arwdDxt/soro         +|                   | all_quote_soro_super_admin (r):                                                          +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_quote_soro_user (r):                                                                 +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | select_quote (r):                                                                        +
+        |                                      |       |                            |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))
+ soro   | quote_line_item                      | table | soro=arwdDxt/soro         +|                   | select_quote_line_item (r):                                                              +
+        |                                      |       | soro_user=rwd/soro         |                   |   (u): (quote_id IN ( SELECT quote.id                                                    +
+        |                                      |       |                            |                   |    FROM soro.quote                                                                       +
+        |                                      |       |                            |                   |   WHERE (quote.seller_id = ( SELECT contact.company_id                                   +
+        |                                      |       |                            |                   |            FROM soro.contact                                                             +
+        |                                      |       |                            |                   |           WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))))
+ soro   | quote_status_processing_config       | table | soro=arwdDxt/soro         +|                   | all_quote_status_processing_config_soro_user (r):                                        +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | all_quote_status_processing_config_soro_super_admin (r):                                 +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin
+ soro   | quote_target_lot                     | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | registration                         | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_super_admin=arwd/soro+|                   | 
+        |                                      |       | soro_anonymous=a/soro      |                   | 
+ soro   | room                                 | table | soro=arwdDxt/soro         +|                   | all_room_soro_super_admin (r):                                                           +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_room_soro_user (r):                                                                  +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | seller                               | table | soro=arwdDxt/soro         +|                   | all_seller_soro_super_admin (r):                                                         +
+        |                                      |       | soro_user=rwd/soro        +|                   |   (u): (1 = 1)                                                                           +
+        |                                      |       | soro_super_admin=awd/soro  |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_seller_soro_user (r):                                                                +
+        |                                      |       |                            |                   |   (u): (id = soro.viewer_company_id())                                                   +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | seller_contact_view                  | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | seller_inventory_type_category       | table | soro=arwdDxt/soro         +|                   | all_seller_inventory_type_category_soro_super_admin (r):                                 +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_seller_inventory_type_category_soro_user (r):                                        +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | seller_user_info_view                | view  |                            |                   | 
+ soro   | seller_view                          | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | shopping_cart                        | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | sku                                  | table | soro=arwdDxt/soro         +|                   | can_select (r):                                                                          +
+        |                                      |       | soro_user=arwdDxt/soro     |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_insert (a):                                                                          +
+        |                                      |       |                            |                   |   (c): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_update (w):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user                                                                          +
+        |                                      |       |                            |                   | can_delete (d):                                                                          +
+        |                                      |       |                            |                   |   (u): soro.check_access(seller_id)                                                      +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | species_mix                          | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+ soro   | strain                               | table | soro=arwdDxt/soro         +|                   | all_strain (r):                                                                          +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (seller_id = ( SELECT contact.company_id                                          +
+        |                                      |       |                            |                   |    FROM soro.contact                                                                     +
+        |                                      |       |                            |                   |   WHERE (contact.id = (current_setting('jwt.claims.contact_id'::text))::uuid)))          +
+        |                                      |       |                            |                   | all_strain_soro_super_admin (r):                                                         +
+        |                                      |       |                            |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_strain_soro_user (r):                                                                +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | strain_view                          | view  |                            |                   | 
+ soro   | ucs_seller_view                      | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | user_info_view                       | view  |                            |                   | 
+ soro   | user_view                            | view  |                            |                   | 
+ soro   | vehicle                              | table | soro=arwdDxt/soro         +|                   | all_vehicle_soro_super_admin (r):                                                        +
+        |                                      |       | soro_user=arwd/soro        |                   |   (u): (1 = 1)                                                                           +
+        |                                      |       |                            |                   |   to: soro_super_admin                                                                   +
+        |                                      |       |                            |                   | all_vehicle_soro_user (r):                                                               +
+        |                                      |       |                            |                   |   (u): (seller_id = soro.viewer_company_id())                                            +
+        |                                      |       |                            |                   |   to: soro_user
+ soro   | vw_order_status_summary              | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | vw_seller_fulfilled_sales_by_month   | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | vw_seller_fulfilled_sales_by_quarter | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | vw_seller_fulfilled_sales_by_week    | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | vw_seller_fulfilled_sales_by_year    | view  | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=r/soro           |                   | 
+ soro   | web_link                             | table | soro=arwdDxt/soro         +|                   | 
+        |                                      |       | soro_user=rwd/soro         |                   | 
+(84 rows)
+

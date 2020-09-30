@@ -105,7 +105,7 @@ function computeTablePolicy (table: PgrTable, tableSecurityProfile: PgrTableSecu
     (all: any, roleGrant: any) => {
       const finalGrant = all.find((g:any) => g.roleName === roleGrant.roleName) || {...roleGrant, grants: []}
       const otherGrants = all.filter((g:any) => g.roleName !== roleGrant.roleName)
-      const exclusions = (['INSERT','UPDATE'].indexOf(roleGrant.action) > -1 ? roleGrant.action[`${roleGrant.action.toLowerCase()}Exclusions`] : [])
+      const exclusions = roleGrant.exclusions || []
       const grantColumns = (['INSERT','UPDATE'].indexOf(roleGrant.action) > -1 ? table.tableColumns : [])
         .map((tc:any) => tc.column_name)
         .filter((c:string) => exclusions.indexOf(c) === -1)
@@ -138,8 +138,8 @@ function computeTablePolicy (table: PgrTable, tableSecurityProfile: PgrTableSecu
 }
 
 async function computeSchemaTableScripts(schemaTableAssignmentSet: PgrSchemaTableProfileAssignmentSet, securityProfiles: PgrTableSecurityProfile[], roles: PgrRoleSet, introspection: any):  Promise<PgrSchemaTableScriptSet>{
-  // const p = Object.keys(schemaTableAssignmentSet.tableAssignments)
-  const p = ['contact']
+  const p = Object.keys(schemaTableAssignmentSet.tableAssignments)
+  // const p = ['contact']
     .map(
       async (tableName: string): Promise<PgrTableScript> => {
         const table = introspection.schemaTree
@@ -156,15 +156,18 @@ async function computeSchemaTableScripts(schemaTableAssignmentSet: PgrSchemaTabl
       }
     )
   const tableScripts: PgrTableScript[] = await Promise.all(p)
+
+  const allInOneScript = tableScripts.map(ts => ts.tableScript).join('\n')
   return {
     schemaName: schemaTableAssignmentSet.schemaName,
+    allTablesInOneScript: allInOneScript,
     tableScripts: tableScripts
   }
 }
 
 async function computeAllSchemaTableScripts(tableSecurityProfileAssignments: PgrSchemaTableProfileAssignmentSet[], mappedSecurityProfiles: PgrTableSecurityProfile[], roleSet: PgrRoleSet, introspection: any): Promise<PgrMasterTableScriptSet> {
   const p = tableSecurityProfileAssignments
-  .filter(s => s.schemaName === 'soro')
+  // .filter(s => s.schemaName === 'soro')
   .map(
     async (schemaAssignments: PgrSchemaTableProfileAssignmentSet) => {      
       const schemaTableScriptSet = await computeSchemaTableScripts(schemaAssignments, mappedSecurityProfiles, roleSet, introspection)
@@ -173,7 +176,9 @@ async function computeAllSchemaTableScripts(tableSecurityProfileAssignments: Pgr
   );
 
   const schemaTableScriptSets = await Promise.all(p)
+  const allInOneScript = schemaTableScriptSets.map(tss => tss.allTablesInOneScript).join('\n')
   return {
+    allTablesInOneScript: allInOneScript,
     schemaTableScriptSets: schemaTableScriptSets
   }
 }

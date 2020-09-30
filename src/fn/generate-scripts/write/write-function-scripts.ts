@@ -1,12 +1,16 @@
-import { mkdirSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import {PgrFunctionScript, PgrSchemaFunctionScriptSet, PgrMasterFunctionScriptSet} from "../../../d"
-
-const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
+import loadConfig from '../../../config'
 
 
 async function writeSchemaFunctionScripts(functionScriptSet: PgrSchemaFunctionScriptSet) {
-  const schemaDir = `${artifactsDir}/${functionScriptSet.schemaName}`
+  const config = await loadConfig()
+  const schemaDir = `${config.artifactsDirectory}/${functionScriptSet.schemaName}`
   const functionsDir = `${schemaDir}/functionScripts`
+  const schemaDirExists = await existsSync(schemaDir)
+  if (!schemaDirExists) {
+    await mkdirSync(schemaDir)
+  }
   await mkdirSync(functionsDir)
 
   const p = functionScriptSet.functionScripts
@@ -16,20 +20,32 @@ async function writeSchemaFunctionScripts(functionScriptSet: PgrSchemaFunctionSc
         await writeFileSync(functionScriptPath, ts.functionScript)
       }
     )
-  await Promise.all(p)
+  const scripts = await Promise.all(p)
 
-  const fullSchemaScript = functionScriptSet.functionScripts.map(fs => fs.functionScript).join('\n')
+  const fullSchemaScript = `
+------------------------------ 
+------------------------------ FUNCTION SECURITY GRANTS FOR SCHEMA: ${functionScriptSet.schemaName}  
+------------------------------ 
+${functionScriptSet.functionScripts.map(fs => fs.functionScript).join('\n')}
 
-  await writeFileSync(`${schemaDir}/all-function-policies.sql`, fullSchemaScript)
+`
+  await writeFileSync(`${schemaDir}/all-function-policies---${functionScriptSet.schemaName}.sql`, fullSchemaScript)
+
+  return fullSchemaScript
 }
 
 async function writeAllSchemaFunctionScripts(masterFunctionScriptSet: PgrMasterFunctionScriptSet) {
+  const config = await loadConfig()
   const p = masterFunctionScriptSet.schemaFunctionScriptSets.map(
     async (ss:PgrSchemaFunctionScriptSet) => {
-      await writeSchemaFunctionScripts(ss)
+      const script = await writeSchemaFunctionScripts(ss)
+      return script
     }
   )
-  await Promise.all(p)
+  const schemaScripts = await Promise.all(p)
+  const allFunctionsScript = schemaScripts.join('\n')
+  await writeFileSync(`${config.artifactsDirectory}/all-function-policies---all-schemata.sql`, allFunctionsScript)
+  return allFunctionsScript
 }
 
 

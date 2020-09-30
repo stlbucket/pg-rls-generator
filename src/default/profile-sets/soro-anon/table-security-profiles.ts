@@ -1,6 +1,6 @@
-import { PgrTableSecurityProfileSet } from "./d"
+import { PgrTableSecurityProfileSet } from "../d"
 
-const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
+const tableSecurityProfileSet: PgrTableSecurityProfileSet = {
   "defaultProfileName": "no-access",
   "defaultInsertExclusions": [
     "id",
@@ -45,7 +45,7 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
           },
           {
             "roleName": "soro_super_admin",
-            "insertExclusions": ["created_at"]
+            "exclusions": ["created_at"]
           }
         ],
         "UPDATE": [
@@ -195,4 +195,4 @@ const defaultPgrTableSecurityProfileSet: PgrTableSecurityProfileSet = {
   ]
 }
 
-export default defaultPgrTableSecurityProfileSet
+export default tableSecurityProfileSet

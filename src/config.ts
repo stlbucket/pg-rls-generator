@@ -25,7 +25,7 @@ async function loadConfig(workDir?: string): Promise<PgrConfig> {
   const tspPath = `${cwd}/table-security-profiles.json`
   const fpaPath = `${cwd}/function-profile-assignments.json`
   const fspPath = `${cwd}/function-security-profiles.json`
-  const artifactsDir = `${cwd}/artifacts`
+  const artifactsDirectory = `${cwd}/artifacts`
 
   const dbConfigExists = await existsSync(dbConfigPath)
   if (dbConfigExists) {
@@ -43,6 +43,7 @@ async function loadConfig(workDir?: string): Promise<PgrConfig> {
 
   config = {
     dbConfig: dbConfig,
+    artifactsDirectory: artifactsDirectory,
     roleSet: roles,
     tableSecurityProfileSet: tableSecurityProfiles,
     tableSecurityProfileAssignments: tableSecurityProfileAssignments,

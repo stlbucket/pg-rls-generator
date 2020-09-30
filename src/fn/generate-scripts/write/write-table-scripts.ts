@@ -1,12 +1,16 @@
-import { mkdirSync, writeFileSync } from 'fs'
-import {PgrTableScript, PgrSchemaTableScriptSet, PgrMasterTableScriptSet} from "../../../d"
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import {PgrTableScript, PgrSchemaTableScriptSet, PgrMasterTableScriptSet, PgrConfig} from "../../../d"
+import loadConfig from '../../../config'
+import { load } from '@oclif/config';
 
-const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
-
-
-async function writeSchemaTableScripts(tableScriptSet: PgrSchemaTableScriptSet) {
-  const schemaDir = `${artifactsDir}/${tableScriptSet.schemaName}`
+async function writeSchemaTableScripts(tableScriptSet: PgrSchemaTableScriptSet): Promise<string> {
+  const config = await loadConfig()
+  const schemaDir = `${config.artifactsDirectory}/${tableScriptSet.schemaName}`
   const tablesDir = `${schemaDir}/tableScripts`
+  const schemaDirExists = await existsSync(schemaDir)
+  if (!schemaDirExists) {
+    await mkdirSync(schemaDir)
+  }
   await mkdirSync(tablesDir)
 
   const p = tableScriptSet.tableScripts
@@ -29,16 +33,25 @@ rollback;`
 
   const fullSchemaScript = tableScriptSet.tableScripts.map(ts => ts.tableScript).join('\n')
 
-  await writeFileSync(`${schemaDir}/all-rls-policies.sql`, fullSchemaScript)
+  await writeFileSync(`${schemaDir}/all-table-policies---${tableScriptSet.schemaName}.sql`, fullSchemaScript)
+
+  return fullSchemaScript
 }
 
 async function writeAllSchemaTableScripts(masterTableScriptSet: PgrMasterTableScriptSet) {
+  const config = await loadConfig()
+
   const p = masterTableScriptSet.schemaTableScriptSets.map(
     async (ss:PgrSchemaTableScriptSet) => {
-      await writeSchemaTableScripts(ss)
+      const schemaScript = await writeSchemaTableScripts(ss)
+      return schemaScript
     }
   )
-  await Promise.all(p)
+  const schemaScripts = await Promise.all(p)
+
+  const allTablesScript = schemaScripts.join('\n')
+  await writeFileSync(`${config.artifactsDirectory}/all-table-policies---all-schemata.sql`, allTablesScript)
+  return allTablesScript
 }
 
 

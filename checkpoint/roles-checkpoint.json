@@ -1,6 +1,4 @@
-import { PgrRoleSet } from "./d"
-
-const defaultPgrRoleSet: PgrRoleSet = {
+{
   "name": "soro-anon",
   "dbOwnerRole": {
     "roleName": "soro",
@@ -42,5 +40,3 @@ const defaultPgrRoleSet: PgrRoleSet = {
     }
   ]
 }
-
-export default defaultPgrRoleSet

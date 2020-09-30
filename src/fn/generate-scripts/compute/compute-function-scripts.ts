@@ -15,8 +15,7 @@ const functionPolicyTemplate = `
 {{#roleGrant}}
 ----------  CREATE NEW FUNCTION GRANTS
 ----------  {{roles}}
-  grant execute on function {{functionSignature}} to {{roles}};
-  
+  grant execute on function {{functionSignature}} to {{roles}};  
 {{/roleGrant}}
 ----------  END FUNCTION POLICY: {{schemaName}}.{{functionName}}
 --==
@@ -25,12 +24,12 @@ const functionPolicyTemplate = `
 function computeFunctionPolicy (fn: PgrFunction, functionSecurityProfile: PgrFunctionSecurityProfile, roles: PgrRoleSet) {
   const revokeRolesList = ['public', ...roles.dbUserRoles.map((r:PgrRole) => r.roleName)].join(',\n       ')
 
-  const roleGrant = {
+  const roleGrant = functionSecurityProfile.grants.EXECUTE.length > 0 ? {
     roles: functionSecurityProfile.grants.EXECUTE.join(', ')
     ,action: "EXECUTE"
     ,schemaName: fn.functionSchema
     ,functionName: fn.functionName
-  }
+  } : null
 
   const signatureArgumentDataTypes = fn ? fn.argumentDataTypes
   .split(',')

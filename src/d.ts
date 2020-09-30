@@ -37,8 +37,7 @@ export interface PgrRoleSet {
 
 export interface PgrRoleGrant {
   roleName: string,
-  insertExclusions?: string[]
-  updateExclusions?: string[]
+  exclusions?: string[]
 }
 
 export interface PgrRoleGrantSet {
@@ -125,6 +124,7 @@ export interface PgrFunctionSecurityProfileAssignmentSet {
 
 export interface PgrConfig {
   dbConfig: ConnectionConfig,
+  artifactsDirectory: string,
   roleSet: PgrRoleSet,
   tableSecurityProfileSet: PgrTableSecurityProfileSet,
   functionSecurityProfileSet: PgrFunctionSecurityProfileSet,
@@ -140,10 +140,12 @@ export interface PgrTableScript {
 
 export interface PgrSchemaTableScriptSet {
   schemaName: string,
+  allTablesInOneScript: string
   tableScripts: PgrTableScript[]
 }
 
 export interface PgrMasterTableScriptSet {
+  allTablesInOneScript: string,
   schemaTableScriptSets: PgrSchemaTableScriptSet[]
 }
 
@@ -165,5 +167,6 @@ export interface PgrScriptSet {
   masterTableScriptSet: PgrMasterTableScriptSet,
   masterFunctionScriptSet: PgrMasterFunctionScriptSet,
   ownershipScript: string,
-  removeAllRlsScript: string
+  removeAllRlsScript: string,
+  createRolesScript: string
 }

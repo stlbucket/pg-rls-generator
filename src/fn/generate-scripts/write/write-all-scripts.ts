@@ -1,23 +1,28 @@
-import {rmdirSync, mkdirSync} from 'fs'
+import {writeFileSync} from 'fs'
+import loadConfig from '../../../config'
+import writeDirectories from './write-directories'
 import writeAllTableScripts from './write-table-scripts'
 import writeAllFunctionScripts from './write-function-scripts'
 import writeOwnershipPolicy from './write-ownership-policy'
 import writeRemoveAllRls from './write-remove-all-rls'
-import { PgrSchema, PgrScriptSet } from '../../../d'
-
-const artifactsDir = `${process.cwd()}/.pgrlsgen/current-draft/artifacts`
+import { PgrScriptSet } from '../../../d'
 
 async function writeAllScripts(scriptSet: PgrScriptSet) {
-    // @ts-ignore
-    await rmdirSync(artifactsDir, {recursive: true})
-    await mkdirSync(artifactsDir)
+    const config = await loadConfig()
+    // // @ts-ignore
+    await writeDirectories(scriptSet)
 
-    await Promise.all(p)
+    const allTablesScript = await writeAllTableScripts(scriptSet.masterTableScriptSet)
+    const allFunctionsScript = await writeAllFunctionScripts(scriptSet.masterFunctionScriptSet)
+    const oneScriptToRuleThemAll = `
+${allTablesScript}
 
-    await writeAllTableScripts(scriptSet.masterTableScriptSet)
-    await writeAllFunctionScripts(scriptSet.masterFunctionScriptSet)
+${allFunctionsScript}
+`
     await writeOwnershipPolicy(scriptSet.ownershipScript)
     await writeRemoveAllRls(scriptSet.removeAllRlsScript)
+
+    await writeFileSync(`${config.artifactsDirectory}/one-script-to-rule-them-all.sql`, oneScriptToRuleThemAll)
 }
 
 export default writeAllScripts

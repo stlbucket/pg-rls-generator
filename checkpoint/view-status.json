@@ -1,0 +1,71 @@
+[
+  {
+    "schemaName": "lf_hist",
+    "viewStatus": {}
+  },
+  {
+    "schemaName": "prd_fn",
+    "viewStatus": {}
+  },
+  {
+    "schemaName": "ucs",
+    "viewStatus": {
+      "vw_ucs_inventory_transfer_status": "not-referenced",
+      "vw_ucs_manifest_status": "not-referenced",
+      "vw_ucs_manifest_stop_item_status": "not-referenced",
+      "vw_ucs_manifest_stop_status": "not-referenced"
+    }
+  },
+  {
+    "schemaName": "soro_auth_app",
+    "viewStatus": {}
+  },
+  {
+    "schemaName": "soro_auth",
+    "viewStatus": {}
+  },
+  {
+    "schemaName": "soro",
+    "viewStatus": {
+      "active_quote_view": "not-referenced",
+      "company_contact_view": "not-referenced",
+      "company_user_info_view": "not-referenced",
+      "company_view": "REFERENCED",
+      "contact_view": "REFERENCED",
+      "customer_contact_view": "not-referenced",
+      "customer_user_info_view": "not-referenced",
+      "customer_view": "REFERENCED",
+      "illegal_contact_view": "not-referenced",
+      "inventory_type_view": "not-referenced",
+      "past_order_view": "not-referenced",
+      "potential_customer_view": "not-referenced",
+      "seller_contact_view": "not-referenced",
+      "seller_user_info_view": "not-referenced",
+      "seller_view": "REFERENCED",
+      "strain_view": "not-referenced",
+      "ucs_seller_view": "not-referenced",
+      "user_info_view": "REFERENCED",
+      "user_view": "REFERENCED",
+      "vw_order_status_summary": "not-referenced",
+      "vw_seller_fulfilled_sales_by_month": "referenced-502",
+      "vw_seller_fulfilled_sales_by_quarter": "not-referenced",
+      "vw_seller_fulfilled_sales_by_week": "not-referenced",
+      "vw_seller_fulfilled_sales_by_year": "not-referenced"
+    }
+  },
+  {
+    "schemaName": "leaf",
+    "viewStatus": {
+      "lf_company_view": "REFERENCED",
+      "lf_customer_view": "REFERENCED",
+      "lf_seller_view": "REFERENCED",
+      "not_xfer_vw": "not-referenced",
+      "should_not_xfer_vw": "not-referenced",
+      "tgt_xfer_vw": "not-referenced"
+    }
+  },
+  {
+    "schemaName": "evt",
+    "viewStatus": {}
+  }
+]

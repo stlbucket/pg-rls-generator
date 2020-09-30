@@ -108,16 +108,11 @@ _See code: [src/commands/init.ts](https://github.com/stlbucket/pg-fn-bucket/blob
 
 ## `pg-fn-bucket release [FILE]`
 
-describe the command here
+copy current-draft dir to a new release dir
 
 ```
 USAGE
   $ pg-fn-bucket release [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
 ```
 
 _See code: [src/commands/release.ts](https://github.com/stlbucket/pg-fn-bucket/blob/v0.0.0/src/commands/release.ts)_

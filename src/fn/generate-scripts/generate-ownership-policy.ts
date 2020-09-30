@@ -1,4 +1,3 @@
-import { writeFileSync } from 'fs';
 import computeOwnershipPolicy from './compute/compute-ownership-script'
 import writeOwnershipPolicy from './write/write-ownership-policy'
 
